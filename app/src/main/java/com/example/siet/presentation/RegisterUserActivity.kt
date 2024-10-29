@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.siet.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class RegisterUserActivity : AppCompatActivity() {
@@ -39,21 +39,22 @@ class RegisterUserActivity : AppCompatActivity() {
             progressBar.visibility = ProgressBar.VISIBLE
         }
 
+        userViewModel.observeRegistrationResult(progressBar, textViewResult, TAG)
         lifecycleScope.launch {
-            userViewModel.registrationSuccess.collectLatest { success ->
-                progressBar.visibility = ProgressBar.GONE
-                if (success) {
-                    startActivity(Intent(this@RegisterUserActivity, FollowsListActivity::class.java))
+            userViewModel.isRegistrationSuccessful.collect { isSuccessful ->
+                if (isSuccessful) {
+                    progressBar.visibility = ProgressBar.GONE
+                    val intent = Intent(this@RegisterUserActivity, FollowsListActivity::class.java)
+                    startActivity(intent)
                     finish()
-                } else {
-                    textViewResult.text = "Registration error"
-                    textViewResult.visibility = TextView.VISIBLE
                 }
             }
         }
+
     }
 
     companion object {
         private const val TAG = "RegisterUserActivity"
     }
 }
+

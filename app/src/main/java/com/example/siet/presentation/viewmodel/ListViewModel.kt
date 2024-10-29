@@ -1,3 +1,4 @@
+package com.example.siet.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -22,7 +23,6 @@ class ListViewModel @Inject constructor(
     val users: StateFlow<PagingData<UserOfList>> = _users
 
     private val _followedUsers = MutableStateFlow<Set<Int>>(emptySet())
-    val followedUsers: StateFlow<Set<Int>> = _followedUsers
 
     fun loadUsers() {
         viewModelScope.launch {
@@ -46,7 +46,5 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    fun isUserFollowed(userId: Int): Boolean {
-        return _followedUsers.value.contains(userId)
-    }
+
 }

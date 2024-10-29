@@ -10,9 +10,11 @@ import com.example.siet.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 
 @Module
@@ -37,11 +39,13 @@ class DataModule {
     }
 
     @Provides
-    fun provideUserRepository(userStorage: UserStorage, apiService: ApiService): UserRepository {
-        return UserRepositoryImpl(
-            userStorage = userStorage,
-            apiService = apiService
-        )
+    @Singleton
+    fun provideUserRepository(
+        userStorage: UserStorage,
+        apiService: ApiService,
+        @ApplicationContext context: Context
+    ): UserRepository {
+        return UserRepositoryImpl(userStorage, apiService, context)
     }
     @Provides
     fun provideGetUsersUseCase(userRepository: UserRepository): GetUsersUseCase {

@@ -1,7 +1,5 @@
 package com.example.siet.presentation
 
-import AdapterList
-import ListViewModel
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.siet.R
+import com.example.siet.domain.models.UserOfList
+import com.example.siet.presentation.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,9 +23,17 @@ class FollowsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_list)
 
+        adapter = AdapterList(
+            context = this,
+            onFollowClick = { user ->
+                viewModel.followUser(user)
+            },
+            onUnfollowClick = { user ->
+                viewModel.unfollowUser(user)
+            }
+        )
+
         val recyclerViewUsers: RecyclerView = findViewById(R.id.recyclerViewUsers)
-
-
         recyclerViewUsers.layoutManager = LinearLayoutManager(this)
         recyclerViewUsers.adapter = adapter
 

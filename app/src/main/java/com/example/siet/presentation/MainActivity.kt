@@ -10,20 +10,22 @@ import com.example.siet.domain.SaveUserUseCase
 
 class MainActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE)
-        val userId = sharedPreferences.getString("userId", null)
 
-//        if (userId != null) {
-//            val intent = Intent(this, UserListActivity::class.java)
-//            startActivity(intent)
-//        } else {
+        val isUserRegistered = sharedPreferences.getBoolean("isUserRegistered", false)
+        val token = sharedPreferences.getString("token", null)
+
+        if (isUserRegistered && token != null) {
+            val intent = Intent(this, FollowsListActivity::class.java) // Переход к списку пользователей
+            startActivity(intent)
+        } else {
             val intent = Intent(this, RegisterUserActivity::class.java)
             startActivity(intent)
-//        }
-//        finish()
+        }
+
+        finish()
     }
 }
