@@ -5,6 +5,7 @@ import com.example.siet.data.network.ApiService
 import com.example.siet.data.repository.UserRepositoryImpl
 import com.example.siet.data.storage.SharedPrefUserStorage
 import com.example.siet.data.storage.UserStorage
+import com.example.siet.domain.GetUsersUseCase
 import com.example.siet.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -41,5 +42,9 @@ class DataModule {
             userStorage = userStorage,
             apiService = apiService
         )
+    }
+    @Provides
+    fun provideGetUsersUseCase(userRepository: UserRepository): GetUsersUseCase {
+        return GetUsersUseCase(userRepository)
     }
 }

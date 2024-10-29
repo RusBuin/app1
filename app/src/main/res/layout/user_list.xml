@@ -6,7 +6,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <ProgressBar
         android:id="@+id/progressBarLoading"
@@ -25,4 +25,3 @@
         android:textSize="16sp"
         android:padding="16dp" />
 </FrameLayout>
-

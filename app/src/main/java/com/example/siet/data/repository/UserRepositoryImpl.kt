@@ -1,6 +1,10 @@
 package com.example.siet.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.siet.data.network.ApiService
+import com.example.siet.data.paging.UserPagingSource
 import com.example.siet.data.storage.User
 import com.example.siet.data.storage.UserStorage
 import com.example.siet.domain.models.PaginatedUserResponse
@@ -39,34 +43,27 @@ class UserRepositoryImpl @Inject constructor(
         val user = userStorage.get()
         return RegistrationRequest(email = user.email, password = user.password)
     }
-//    override suspend fun getUsers(): Flow<List<UserOfList>> {
-//        return flow {
-//            try {
-//                val response = apiService.getUsers()
-//
-//                if (response.isSuccessful) {
-//                    val users = response.body()?.data ?: emptyList()
-//                    emit(users)
-//                } else {
-//                    emit(emptyList()) s databasy
-//                }
-//            } catch (e: Exception) {
-//                emit(emptyList())
-//            }
-//        }
-//    }
 
-//    override suspend fun fetchUsers(page: Int, perPage: Int): Result<PaginatedUserResponse> {
-//        return try {
-//            val response = apiService.getUsers(page, perPage)
-//            if (response.isSuccessful) {
-//                Result.success(response.body()!!)
-//            } else {
-//                Result.failure(Exception("Error: ${response.code()}"))
-//            }
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
+    override fun getUsers(): Flow<PagingData<UserOfList>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20), // Установите размер страницы
+            pagingSourceFactory = { UserPagingSource(apiService) }
+        ).flow
+    }
+
+
+    override suspend fun fetchUsers(page: Int, perPage: Int): Result<PaginatedUserResponse> {
+        return try {
+            val response = apiService.getUsers(page, perPage)
+            if (response.isSuccessful) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 }

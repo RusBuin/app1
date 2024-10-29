@@ -13,9 +13,9 @@ interface ApiService {
     @POST("register")
     suspend fun registerUser(@Body request: RegistrationRequest): Response<RegistrationResponse>
 
-//    @GET("users")
-//    suspend fun getUsers(
-//        @Query("page") page: Int,
-//        @Query("per_page") perPage: Int
-//    ): Response<PaginatedUserResponse>
+    @GET("users")
+    suspend fun getUsers(
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<PaginatedUserResponse>
 }

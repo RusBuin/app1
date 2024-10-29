@@ -28,6 +28,10 @@
             android:name=".presentation.RegisterUserActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".presentation.FollowsListActivity"
+            android:exported="true">
+        </activity>
 
     </application>
 
